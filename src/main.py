@@ -48,7 +48,7 @@ def verificarEmail():
                 # Roda um regex e procura apenas o link
                 link = re.search(padrao_link, msg.text)
 
-                # Caso não tenha o link, retorna
+                # Caso não tenha o link, sai do loop
                 if not link:
                     continue
 

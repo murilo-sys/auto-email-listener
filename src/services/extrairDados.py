@@ -70,13 +70,13 @@ def extrairDados(html):
     if not remetente:
         faltando.append("Rementente")
     else:
-        dados_coleta["remetente"] = remetente.text.replace("Remetente:", "").strip()
+        dados_coleta["remetente"] = remetente.text.replace("Remetente:", "").split("-", 1)[0].strip()
 
     #Caso não tenha destinatario
     if not destinatario:
         faltando.append("Destinatário")
     else:
-        dados_coleta["destinatario"] = destinatario.text.replace("Destinatário:", "").strip()
+        dados_coleta["destinatario"] = destinatario.text.replace("Destinatário:", "").split("-", 1)[0].strip()
 
     #Caso não tenha valor total
     if not valorTotal:
@@ -112,9 +112,8 @@ def extrairDados(html):
     else:
         dados_coleta["volume"] = volume.text.replace("Volume:", "").strip()
         
-    # Caso tenha algum valor em faltando, devolve o valor faltando
-    if faltando:
-        return faltando
-        
-    # Devolve dados da coleta caso esteja tudo ok
-    return dados_coleta
+    return{
+        "sucesso": len(faltando) == 0,
+        "dados": dados_coleta,
+        "faltando": faltando
+    }
