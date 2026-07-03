@@ -12,11 +12,11 @@ def testar_mock_html():
 
     # 3. Exibe o resultado final
     print("\n--- Resultado da Extração ---")
-    if isinstance(dados_extraidos, list):
+    if not dados_extraidos['sucesso']:
         print(f'Não foi possível encontrar os seguintes dados: {dados_extraidos}')
         return
         
-    print(dados_extraidos)
+    print(dados_extraidos['dados'])
 
 
 if __name__ == "__main__":

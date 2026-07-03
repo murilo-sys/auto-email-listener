@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from util.extrairTexto import extrairTexto
 
 
 def extrairDados(html):
@@ -70,19 +71,19 @@ def extrairDados(html):
     if not remetente:
         faltando.append("Rementente")
     else:
-        dados_coleta["remetente"] = remetente.text.replace("Remetente:", "").split("-", 1)[0].strip()
+        dados_coleta["remetente"] = extrairTexto(remetente, "Remetente:").split("-", 1)[0].strip()
 
     #Caso não tenha destinatario
     if not destinatario:
         faltando.append("Destinatário")
     else:
-        dados_coleta["destinatario"] = destinatario.text.replace("Destinatário:", "").split("-", 1)[0].strip()
+        dados_coleta["destinatario"] = extrairTexto(destinatario, "Destinatário:").split("-", 1)[0].strip()
 
     #Caso não tenha valor total
     if not valorTotal:
         faltando.append("Valor Total")
     else:
-        dados_coleta["valorTotal"] = valorTotal.text.replace("Valor Total:", "").replace("R$", "").strip()
+        dados_coleta["valorTotal"] = extrairTexto(valorTotal, ["R$", "Valor Total:"])
 
     #Caso não tenha local de coleta
     if not localDeColeta:
@@ -104,14 +105,15 @@ def extrairDados(html):
     if not peso:
         faltando.append("Peso")
     else:
-        dados_coleta["peso"] = peso.text.replace("Peso:", "").replace("Kg", "").strip()
+        dados_coleta["peso"] = extrairTexto(peso, ["Kg", "Peso:"])
 
     # Caso não tenha o valor de volume
     if not volume:
         faltando.append("Volume")
     else:
-        dados_coleta["volume"] = volume.text.replace("Volume:", "").strip()
+        dados_coleta["volume"] = extrairTexto(volume, "Volume:")
         
+    # Retorna os dados
     return{
         "sucesso": len(faltando) == 0,
         "dados": dados_coleta,
